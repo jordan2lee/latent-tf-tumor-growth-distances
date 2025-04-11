@@ -81,3 +81,39 @@ bash scripts/process.sh PAAD data/midway.freeze.v2
 > Creates file data/midway.freeze.v2/<CANCER>_GEXP/<CANCER>_GEXP_prep2_<TYPE>.tsv
 
 ## Calculate Latent Transcription Factor Distances
+
+Prep matrix
+```bash
+python scripts/matrix_prep.py \
+    --maindir data/midway.freeze.v2 \
+    --outfile data/distance_metric/hcmi.counts.tsv
+```
+
+Get the list of features intersecting with PathwayCommons
+```bash
+curl -o src/PathwayCommons12.All.hgnc.sif.gz https://download.baderlab.org/PathwayCommons/PC2/v12/PathwayCommons12.All.hgnc.sif.gz
+```
+```bash
+python scripts/matrix_intersect.py \
+    -m data/distance_metric/hcmi.counts.tsv \
+    -s src/PathwayCommons12.All.hgnc.sif.gz \
+    --out data/distance_metric/features.txt
+```
+
+Normalize the matrix on the subset of represented features
+```bash
+python scripts/matrix_expmax_normalize.py \
+    data/distance_metric/hcmi.counts.tsv \
+    --features data/distance_metric/features.txt \
+    --out data/distance_metric/hcmi.normalized.tsv \
+    --precision 5
+```
+
+To get the model - this may take a while
+```bash
+python scripts/tf_net_train.py \
+    data/distance_metric/hcmi.normalized.tsv src/PathwayCommons12.All.hgnc.sif.gz \
+    --epochs 100 \
+    -o data/distance_metric/model-tf-hcmi
+```
+

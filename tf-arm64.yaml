@@ -1,0 +1,17 @@
+name: tf-metal
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python=3.11  ## specify version
+  - pip
+  - ipykernel
+
+  ## PyPI packages
+  - pip:
+    - tensorflow==2.17.0
+    - numpy==1.24.3
+    - pandas
+    - scipy
+    - statistics
+    - scikit-learn

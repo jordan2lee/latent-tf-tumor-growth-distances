@@ -11,27 +11,41 @@
     curl -O https://gdc.cancer.gov/files/public/file/gdc-client_v1.6.1_Ubuntu_x64.zip
     unzip gdc-client_v1.6.1_Ubuntu_x64.zip
     ```
++ Install TensorFlow
+    If you are running on Apple Silicon, see 1.1 section below
 
-## 2. Create an environment and install dependencies
+## 1.1 Install TensorFlow on Applice Silicon
+Create conda environment
 ```bash
-python3 -m venv venv; source venv/bin/activate
+conda env create -n venv-ltf -f tf-arm64.yaml
 ```
 
+Check the base architecture, if it returned osx-arm64 then create a conda environment otherwise follow this alternative instructions
 ```bash
-pip install -r requirements.txt 
+conda config --show subdir
 ```
 
-## 3. Sign into Applications
+Activate environment
+```bash
+conda activate venv-ltf
+```
+
+> *Optional - Register the kernel with Jupyter.* This kernel can be selected within jupyter notebooks 
+    > ```bash
+    > python -m ipykernel install --user --name=venv-ltf
+    > ```
+
+## 2. Sign into Applications
 Docker Sign In (if not already)
 
 ```bash
 docker login
 ```
 
-## 4. GDC Client Token
+## 3. GDC Client Token
 Token setup. Go to https://portal.awg.gdc.cancer.gov/ get token under profile and save as `secrets/gdc-awg.token`
 
-## 5. Fetch Classifier Submodule
+## 4. Fetch Classifier Submodule
 Intialize and fetch the submodule *gdan-tmp-models.*
 
 ```bash
@@ -40,7 +54,7 @@ Intialize and fetch the submodule *gdan-tmp-models.*
 
 Make sure to complete each step on the [submodule requirements page](https://github.com/NCICCGPO/gdan-tmp-models/blob/main/doc/requirements.md)
 
-## 4. Download Required Data
+## 5. Download Required Data
 TODO update this section
 
 Place files in
