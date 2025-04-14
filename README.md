@@ -19,7 +19,9 @@ Install requirements - detailed instructions are found on the [Requirements page
 
 1. Install Python 3+
 2. Install Docker Desktop (or Docker)
-4. Install GDC Data Transfer Tool Client
+3. Install GDC Data Transfer Tool Client
+4. Install TensorFlow
+
 
 Ensure that steps are completed on the [Requirements page](doc/requirements.md) - *(includes creating working environment, signining in, and manually downloading required data)*
 
