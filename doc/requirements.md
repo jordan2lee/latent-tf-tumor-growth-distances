@@ -55,9 +55,13 @@ Intialize and fetch the submodule *gdan-tmp-models.*
 Make sure to complete each step on the [submodule requirements page](https://github.com/NCICCGPO/gdan-tmp-models/blob/main/doc/requirements.md)
 
 ## 5. Download Required Data
-TODO update this section
 
-Place files in
-```
-data/distance_metric/src/missing_ohsu_euclidean_distance_all.02.12.2024.csv # used in dist_model-tumor.py
-```
+Download these files and place in:
+
++ `src/key_samples.csv`
++ `src/gdc_download_ref/gdc_manifest.<CANCER>_GEXP_Model.txt`
++ `src/gdc_download_ref/gdc_manifest.<CANCER>_GEXP_Tumor.txt`
++ `src/gdc_download_ref/gdc_sample_sheet.<CANCER>_GEXP_Model.tsv`
++ `src/gdc_download_ref/gdc_sample_sheet.<CANCER>_GEXP_Tumor.tsv`
++ `src/distance_metric/HCMI_AWG_Model-Tumor-Normal_Linkage_v2.0_2.20.2024.txt`
+
