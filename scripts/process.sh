@@ -4,22 +4,15 @@ set -e
 cancer=${1}
 outdir=${2}
 
+mkdir -p ${outdir}/${1}_GEXP
+
 # extract info from STAR counts file (tumor)
 echo 'Extracting tumor'
-mkdir -p ${outdir}/${1}_GEXP
-cp src/distance_metric/gdc_sample_sheet.${1}_GEXP_Tumor.tsv src/gdc_sample_sheet.${1}_GEXP.tsv
-python scripts/extract_gdc_info.py --run ${1}_GEXP --dir data/distance_metric/src/${1}_GEXP_Tumor --outdir ${outdir}
-mv src/index2file.${1}_GEXP.tsv src/distance_metric/index2file.${1}_GEXP_Tumor.tsv
-mv ${outdir}/${1}_GEXP/${1}_GEXP.tsv ${outdir}/${1}_GEXP/${1}_GEXP_Tumor.tsv
-rm src/gdc_sample_sheet.${1}_GEXP.tsv
+python scripts/extract_gdc_info.py --run ${1}_GEXP --stype Tumor --dir data-raw/${1}_GEXP_Tumor --outdir ${outdir}
 
 # extract info from STAR counts file (model)
 echo 'Extracting model'
-cp src/distance_metric/gdc_sample_sheet.${1}_GEXP_Model.tsv src/gdc_sample_sheet.${1}_GEXP.tsv
-python scripts/extract_gdc_info.py --run ${1}_GEXP --dir data/distance_metric/src/${1}_GEXP_Model --outdir ${outdir}
-mv src/index2file.${1}_GEXP.tsv src/distance_metric/index2file.${1}_GEXP_Model.tsv
-mv ${outdir}/${1}_GEXP/${1}_GEXP.tsv ${outdir}/${1}_GEXP/${1}_GEXP_Model.tsv
-rm src/gdc_sample_sheet.${1}_GEXP.tsv
+python scripts/extract_gdc_info.py --run ${1}_GEXP --stype Model --dir data-raw/${1}_GEXP_Model --outdir ${outdir}
 
 # convert to TMP nomenclature (entrez ids, then conversion)
 echo 'Convert to Entrez ID'

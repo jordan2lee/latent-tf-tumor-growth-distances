@@ -6,10 +6,10 @@
 # BiocManager::install(version = "3.16")
 # BiocManager::install('biomaRt')
 # install.packages('argparse', quiet=TRUE)
-suppressPackageStartupMessages(library(argparse))
-suppressPackageStartupMessages(library(biomaRt))
-suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(data.table))
+suppressWarnings(suppressPackageStartupMessages(library(argparse)))
+suppressWarnings(suppressPackageStartupMessages(library(biomaRt)))
+suppressWarnings(suppressPackageStartupMessages(library(dplyr)))
+suppressWarnings(suppressPackageStartupMessages(library(data.table)))
 
 # create parser object
 parser <- ArgumentParser()
@@ -17,7 +17,6 @@ parser$add_argument("-i", "--input", type='character', help='input file to read 
 parser$add_argument("-o", "--output", type='character', help='output file to read out ')
 args <- parser$parse_args()
 
-print(args$input)
 # First pull gene info from Biomart
 t <- fread(args$input)
 
@@ -54,4 +53,3 @@ names(t)[1]='Entrez_Gene_Id'
 t <- na.omit(t) # clear where no entrez found
 row.names(t)<- as.vector(seq(1, dim(t)[1]))
 write.table(t, file=args$output, sep='\t', col.names = TRUE,row.names = TRUE)
-print(paste('created file', args$output))
