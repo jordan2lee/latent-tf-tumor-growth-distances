@@ -82,7 +82,7 @@ bash scripts/process.sh PAAD data/prep
 Prep matrix
 ```bash
 python scripts/matrix_prep.py \
-    --maindir data/midway.freeze.v2 \
+    --maindir data/prep \
     --outfile data/distance_metric/hcmi.counts.tsv
 ```
 
