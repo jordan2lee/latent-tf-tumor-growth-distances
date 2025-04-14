@@ -1,4 +1,4 @@
-<h1 align="center">Euclidean Distance Method</h1>
+<h1 align="center">Latent Transcription Factor Distance Method</h1>
 <h4 align="center">Biological distance between tumors and their lab grown models</h4>
 
 
