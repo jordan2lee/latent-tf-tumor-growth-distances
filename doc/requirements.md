@@ -54,6 +54,8 @@ Intialize and fetch the submodule *gdan-tmp-models.*
 
 Make sure to complete each step on the [submodule requirements page](https://github.com/NCICCGPO/gdan-tmp-models/blob/main/doc/requirements.md)
 
+**Next**, download required data for submodule under [Download Required Data](https://github.com/NCICCGPO/gdan-tmp-models/blob/main/doc/requirements.md#4-download-required-data)
+
 ## 5. Download Required Data
 
 Download these files and place in:
