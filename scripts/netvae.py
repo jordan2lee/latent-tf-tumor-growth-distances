@@ -4,11 +4,35 @@ import json
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from tensorflow import keras
+# from tensorflow import keras
+import keras
 from sklearn.preprocessing import RobustScaler, MinMaxScaler
 
 
+@tf.function
+def vae_loss(model, x):
+    z_mean, z_log_var, z = model.encoder(x)
+    reconstruction = model.decoder(z)
+    reconstruction_loss = x.shape[1] * keras.metrics.binary_crossentropy(x, reconstruction)
+    kl_loss = - 0.5 * tf.reduce_sum(1 + z_log_var - tf.square(z_mean) - 
+                            tf.exp(z_log_var), axis=-1)
+    total_loss = reconstruction_loss + kl_loss
+    return total_loss, reconstruction_loss, kl_loss
 
+class VAEBetaLoss:
+    def __init__(self, beta):
+        self.beta = beta
+
+    def loss(self, model, x):
+        z_mean, z_log_var, z = model.encoder(x)
+        reconstruction = model.decoder(z)
+        reconstruction_loss = x.shape[1] * keras.metrics.binary_crossentropy(x, reconstruction)
+        kl_loss = - 0.5 * tf.reduce_sum(1 + z_log_var - tf.square(z_mean) - 
+                                tf.exp(z_log_var), axis=-1)
+        total_loss = reconstruction_loss + (self.beta * kl_loss)
+        return total_loss, reconstruction_loss, kl_loss
+
+@keras.saving.register_keras_serializable(package="netvae")
 class Sampling(keras.layers.Layer):
     """Uses (z_mean, z_log_var) to sample z"""
 
@@ -20,11 +44,12 @@ class Sampling(keras.layers.Layer):
         return z_mean + tf.exp(0.5 * z_log_var) * epsilon
 
 class VAE(keras.Model):
-    def __init__(self,features, encoder, decoder, **kwargs):
+    def __init__(self,features, encoder, decoder, loss=vae_loss, **kwargs):
         super().__init__(**kwargs)
         self.encoder = encoder
         self.decoder = decoder
         self.features = features
+        self.loss = loss
         self.total_loss_tracker = keras.metrics.Mean(name="total_loss")
         self.reconstruction_loss_tracker = keras.metrics.Mean(
             name="reconstruction_loss"
@@ -42,25 +67,7 @@ class VAE(keras.Model):
     def train_step(self, data):
         """VAE training step"""
         with tf.GradientTape() as tape:
-            z_mean, z_log_var, z = self.encoder(data)
-            reconstruction = self.decoder(z)
-            
-            """
-            reconstruction_loss = tf.reduce_mean(
-                tf.reduce_sum(
-                    keras.losses.binary_crossentropy(data, reconstruction)
-                )
-            )
-            
-            kl_loss = -0.5 * (1 + z_log_var - tf.square(z_mean) - tf.exp(z_log_var))
-            kl_loss = tf.reduce_mean(tf.reduce_sum(kl_loss, axis=1))
-            total_loss = reconstruction_loss + kl_loss
-            """
-            reconstruction_loss = data.shape[1] * keras.metrics.binary_crossentropy(data, reconstruction)
-            kl_loss = - 0.5 * tf.reduce_sum(1 + z_log_var - tf.square(z_mean) - 
-                                tf.exp(z_log_var), axis=-1)
-            #total_loss = tf.mean(reconstruction_loss + (tf.get_value(beta) * kl_loss))
-            total_loss = reconstruction_loss + kl_loss
+            total_loss, reconstruction_loss, kl_loss = self.loss(self, data)
 
         grads = tape.gradient(total_loss, self.trainable_weights)
         self.optimizer.apply_gradients(zip(grads, self.trainable_weights))
@@ -266,8 +273,8 @@ class NetworkConstraint(tf.keras.constraints.Constraint):
         return w * self.mask
 
     def get_config(self):
-        #print("config", self.gene_index, self.pathway_index, self.pathway_membership)
-        return {'feature_index': self.feature_index, "latent_index" : self.latent_index, "pathway_membership" : self.latent_membership}
+        #print("config", self.gene_index, self.pathway_index, self.latent_membership)
+        return {'feature_index': self.feature_index, "latent_index" : self.latent_index, "latent_membership" : self.latent_membership}
 
 
 def build_encoder(feature_dim, latent_dim, constraint=None, batch_norm=False):
@@ -275,9 +282,11 @@ def build_encoder(feature_dim, latent_dim, constraint=None, batch_norm=False):
     ei = encoder_inputs
     if batch_norm:
         ei = keras.layers.BatchNormalization(encoder_inputs)
+    activation = "relu" # "sigmoid"
     pathway_layer = keras.layers.Dense(
-        latent_dim, 
-        kernel_initializer='glorot_uniform', 
+        latent_dim,
+        activation=activation,
+        kernel_initializer='glorot_uniform',
         kernel_constraint=constraint,
         name="pathway_layer")(ei)
     x = pathway_layer
@@ -293,9 +302,10 @@ def build_encoder(feature_dim, latent_dim, constraint=None, batch_norm=False):
 
 def build_decoder(feature_dim, latent_dim):
     latent_inputs = keras.Input(shape=(latent_dim,))
+    activation = "relu" # "sigmoid"
     x = keras.layers.Dense(
         feature_dim, kernel_initializer='glorot_uniform', 
-        activation='sigmoid', name="decoder_input")(latent_inputs)
+        activation=activation, name="decoder_input")(latent_inputs)
     decoder_outputs = x
     decoder = keras.Model(latent_inputs, decoder_outputs, name="decoder")
     print(decoder.summary())
