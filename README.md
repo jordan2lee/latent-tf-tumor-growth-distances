@@ -121,3 +121,10 @@ python scripts/matrix_project.py \
     --out data/distance_metric/hcmi.latent.tsv
 ```
 
+To get the all vs all distances
+```bash
+python scripts/matrix_distance.py \
+    data/distance_metric/hcmi.latent.tsv \
+    -m \
+    -o data/distance_metric/hcmi.latent.dists.csv
+```
