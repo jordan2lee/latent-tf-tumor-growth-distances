@@ -1,0 +1,7 @@
+name: venv-ltf
+dependencies:
+  - numpy
+  - pandas
+  - scipy
+  - statistics
+  - openpyxl
