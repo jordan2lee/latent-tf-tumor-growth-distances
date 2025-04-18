@@ -14,7 +14,7 @@
 + Install TensorFlow
     If you are running on Apple Silicon, see 1.1 section below
 
-## 1.1 Install TensorFlow on Applice Silicon
+## 1.1 Install TensorFlow on Apple Silicon
 Create conda environment
 ```bash
 conda env create -n venv-ltf -f tf-arm64.yaml
