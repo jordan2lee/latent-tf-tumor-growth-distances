@@ -4,7 +4,6 @@
 
 ## Table of contents
 - [Quickstart Guide](#quickstart-guide)
-- [Download Source Files](#download-source-files)
 - [Download Data from Manifest File Using the GDC Client](#download-data-from-manifest-file-using-the-gdc-client)
 - [Run Processing Pipeline](#run-processing-pipeline)
 - [Calculate Euclidean Distances](#calculate-euclidean-distances)
@@ -18,28 +17,11 @@
 Install requirements - detailed instructions are found on the [Requirements page](doc/requirements.md):
 
 1. Install Python 3+
-2. Install Docker Desktop (or Docker)
-3. Install GDC Data Transfer Tool Client
-4. Install TensorFlow
+2. Install GDC Data Transfer Tool Client
+3. Install TensorFlow
 
 
 Ensure that steps are completed on the [Requirements page](doc/requirements.md) - *(includes creating working environment, signining in, and manually downloading required data)*
-
-## Download Source Files
-
-This will show how to get the files to download files from the GDC data portal by using a manifest file
-
-### Download Manifest Files
-
-Download manifest files for all samples and place in `src/gdc_download_ref/`
-
-> Manifest names follow the pattern: `gdc_manifest.<CANCER>_<DATAPLATFORM>_<TYPE>.txt`
-
-### Download Sample Sheets
-
-Download manifest files for all samples and place in `src/gdc_download_ref/`. TODO add location to download these files.
-
-> Sample sheet names follow the pattern: `gdc_sample_sheet.<CANCER>_<DATAPLATFORM>_<TYPE>.tsv`
 
 ## Download Data from Manifest File Using the GDC Client
 Download Gene Expression Data
