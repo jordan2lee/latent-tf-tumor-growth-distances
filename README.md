@@ -129,10 +129,11 @@ python scripts/matrix_distance.py \
     -o data/distance_metric/hcmi.latent.dists.csv
 ```
 
-Then reformat to report to larger group
-```
-scripts/reformat_allvsall_lat.py
+Then reformat to report to larger group. Reports distances as euclidean distances and z-scores of euclidean distances (where z-scores are calculated ACROSS tissue cohorts)
+```bash
+python scripts/reformat_allvsall_lat.py \
+    --dist data/distance_metric/hcmi.latent.dists.csv \
+    --out data/distance_metric/main_results/latent_tf_dist_all_cohorts.tsv
 ```
 
-> final distances reported were z-scores from the file `data/distance_metric/main_results/latent_dist_all_cohorts.12_09_24.tsv`
-> reports distances as euclidean distances and z-scores of euclidean distances (where z-scores are calculated ACROSS tissue cohorts)
+> Final distances reported were z-scores from the file `data/distance_metric/main_results/latent_tf_dist_all_cohorts.tsv`

@@ -66,4 +66,5 @@ Download these files and place in:
 + `src/gdc_download_ref/gdc_sample_sheet.<CANCER>_GEXP_Model.tsv`
 + `src/gdc_download_ref/gdc_sample_sheet.<CANCER>_GEXP_Tumor.tsv`
 + `src/distance_metric/HCMI_AWG_Model-Tumor-Normal_Linkage_v2.0_2.20.2024.txt`
++ `src/template_latent_reporting.xlsx`
 

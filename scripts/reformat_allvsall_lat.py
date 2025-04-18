@@ -7,27 +7,25 @@
 import pandas as pd
 import numpy as np
 import scipy.stats as stats
+import argparse
 
-###
-outfile = 'data/distance_metric/main_results/latent_dist_all_cohorts.12_09_24.tsv'
-###
+parser = argparse.ArgumentParser()
+parser.add_argument("--dist", "-d", default="distance file")
+parser.add_argument("--out", "-o", default="output file")
+args = parser.parse_args()
 
 # read in template (we will overwrite a column here with the updated distances)
-file = 'src/template_latent_reporting.xlsx'
-ref = pd.read_excel(file)
+ref = pd.read_excel('src/template_latent_reporting.xlsx')
 
 # read in NEW latent distances
-file = 'new_latent_tf/hcmi.latent.dists.tsv'
-df = pd.read_csv(file, sep='\t', index_col=0)
-
+df = pd.read_csv(args.dist, sep=',', index_col=0)
 
 # build new reporting of distance column
 new_distance = []
-
 for i in range(0, ref.shape[0]):
     model = ref['reference(model_OR_tcga)'][i]
     tumor = ref['tumor'][i]
-    # 'HCM-WCMC-0497-C18-01A'= COADREAD, 'HCM-CSHL-1264-C25-01A'=PAAD
+    # Unique sample handling-'HCM-WCMC-0497-C18-01A' COADREAD, 'HCM-CSHL-1264-C25-01A' PAAD
     if tumor in ['HCM-WCMC-0497-C18-01A', 'HCM-CSHL-1264-C25-01A']:
         new_distance.append(np.nan)
     else:
@@ -37,9 +35,7 @@ for i in range(0, ref.shape[0]):
             dist_vect = [round(a,4) for a in list(df.loc[tumor, model ])]
             assert len(set(dist_vect))==1
             distance = list(set(df.loc[tumor, model ]))[0]
-
         new_distance.append(distance)
-
 assert len(new_distance)==ref.shape[0]
 ref = ref.drop('z-score_to_model_or_tcga', axis=1)
 ref.insert(2, 'distance', new_distance)
@@ -53,7 +49,8 @@ for cancer in uniq_cancers:
     # calc z-score but if NA distance then remove from cohort
     nan_indices = list(s1.loc[pd.isna(s1['distance']), :].index)
     s1 = s1['distance'].dropna()
-    index_order = list(s1.index) # save row index for mapping back to original ref later
+    # save row index for mapping back to original ref later
+    index_order = list(s1.index) 
     darray =np.array(s1)
     z = stats.zscore(darray)
     # save
@@ -61,14 +58,13 @@ for cancer in uniq_cancers:
         index2z[i_nan]=np.nan
     for i in range(0, len(index_order)):
         index2z[index_order[i]]=z[i]
-
 zscore = []
 outlier =[]
 for i in ref.index:
     z = index2z[i]
     zscore.append(z)
     if abs(z)>3:
-        print('outlier found {}'.format(i))
+        # print('outlier found {}'.format(i))
         outlier.append('TRUE')
     else:
         outlier.append(np.nan)
@@ -76,7 +72,5 @@ for i in ref.index:
 ref = ref.drop('outlier', axis=1)
 ref.insert(3, 'outlier', outlier)
 ref.insert(4, 'z_score', zscore)
-
 ref = ref.sort_values(by=['cohort', 'tumor'])
-
-ref.to_csv(outfile, sep='\t', index=False)
+ref.to_csv(args.out, sep='\t', index=False)
