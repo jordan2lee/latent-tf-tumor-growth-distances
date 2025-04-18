@@ -31,7 +31,7 @@ This will show how to get the files to download files from the GDC data portal b
 
 ### Download Manifest Files
 
-Download manifest files for all samples and place in `src/gdc_download_ref/`. TODO add location to download these files.
+Download manifest files for all samples and place in `src/gdc_download_ref/`
 
 > Manifest names follow the pattern: `gdc_manifest.<CANCER>_<DATAPLATFORM>_<TYPE>.txt`
 
@@ -68,7 +68,6 @@ This will create subfolders in `data-raw/<CANCER>_GEXP_<TYPE>` and place GDC mol
 
 
 ## Run Processing Pipeline
-TODO update this output dir name to reflect that this is for GEXP data
 
 Example shown for running PAAD cohort
 ```bash
