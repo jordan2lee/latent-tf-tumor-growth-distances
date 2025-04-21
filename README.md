@@ -31,22 +31,9 @@ bash scripts/gdc_download.sh
 
 This will create subfolders in `data-raw/<CANCER>_GEXP_<TYPE>` and place GDC molecular matrices here.
 
-> *Note on the selection of Cancer Type: These HCMI selections of Cancer Type were made and grouped together for each corresponding TCGA cancer cohort:*
->
-> + 'BLCA':['Bladder Cancer']
-> + 'BRCA':['Breast Cancer','Intraductal Carcinoma']
-> + 'COADREAD': ['Colorectal Cancer', 'Rare Cancer','Serrated Adenoma','Tubular Adenoma','Tubulovilluos Adenoma']
-> + 'ESO': ['Esophageal Cancer','Stomach Cancer']
-> + 'HNSC':['Head and Neck']
-> + 'KID':['Kidney Cancer']
-> + 'LGGGBM':['Glioblastoma']
-> + 'LIHCCHOL':['Extrahepatic Cholangiocarcinoma','Ampulla of Vater','Hepatocellular carcinoma','Intrahepatic Cholangiocarcinoma']
-> + 'LUNG':['Lung Cancer']
-> + 'OV':['Ovarian Cancer']
-> + 'PAAD': ['Pancreatic Cancer']
-> + 'SARC': ['Bone Cancer','Clear Cell Sarcoma','Desmoid Tumors','Epithelial Sarcoma','Ewing Sarcoma','Intimal Sarcoma','Leiomyosarcoma','Rhabdomyosarcoma','Spindle Cell Sarcoma','Undifferentiated Pleomorphic Sarcoma']
-> + 'SKCM':['Melanoma']
-> + 'UCEC':['Endometrial Cancer'],
+> Options for cancer cohort includes `ALL`, `BLCA`, `BRCA`, `COADREAD`, `ESO`, `HNSC`, `KID`, `LGGGBM`, `LIHCCHOL`, `LUNG`, `OV`, `PAAD`, `SARC`, `SKCM`, `UCEC`
+
+For more details on each cancer cohort option see [Cohort Options Page](doc/cohort_options.md)
 
 
 ## Run Processing Pipeline
@@ -57,6 +44,10 @@ bash scripts/process.sh PAAD data/prep
 ```
 
 > Creates file `data/prep/<CANCER>_GEXP/<CANCER>_GEXP_prep2_<TYPE>.tsv` that is prepped for distance calculations
+
+> Options for cancer cohort includes `ALL`, `BLCA`, `BRCA`, `COADREAD`, `ESO`, `HNSC`, `KID`, `LGGGBM`, `LIHCCHOL`, `LUNG`, `OV`, `PAAD`, `SARC`, `SKCM`, `UCEC`
+
+For more details on each cancer cohort option see [Cohort Options Page](doc/cohort_options.md)
 
 ## Calculate Latent Transcription Factor Distances
 
