@@ -57,3 +57,8 @@ Download these files from the publication page and place in:
 + `src/distance_metric/HCMI_AWG_Model-Tumor-Normal_Linkage_v2.0_2.20.2024.txt`
 + `src/template_latent_reporting.xlsx`
 
+And run
+```bash
+curl -o src/PathwayCommons12.All.hgnc.sif.gz https://download.baderlab.org/PathwayCommons/PC2/v12/PathwayCommons12.All.hgnc.sif.gz
+```
+

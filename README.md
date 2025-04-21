@@ -24,30 +24,20 @@ Install requirements - detailed instructions are found on the [Requirements page
 Ensure that steps are completed on the [Requirements page](doc/requirements.md) - *(includes creating working environment, signining in, and manually downloading required data)*
 
 ## Download Data from Manifest File Using the GDC Client
-Download Gene Expression Data
+Download Gene Expression Data - all cohorts need to be ran for downstream cohort analysis
 ```bash
-bash scripts/gdc_download.sh PAAD
+bash scripts/gdc_download.sh
 ```
 
 This will create subfolders in `data-raw/<CANCER>_GEXP_<TYPE>` and place GDC molecular matrices here.
 
-> Options for cancer cohort includes `ALL`, `BLCA`, `BRCA`, `COADREAD`, `ESO`, `HNSC`, `KID`, `LGGGBM`, `LIHCCHOL`, `LUNG`, `OV`, `PAAD`, `SARC`, `SKCM`, `UCEC`
-
-For more details on each cancer cohort option see [Cohort Options Page](doc/cohort_options.md)
-
-
 ## Run Processing Pipeline
 
-Example shown for running PAAD cohort
 ```bash
-bash scripts/process.sh PAAD data/prep
+bash scripts/process.sh data/prep
 ```
 
 > Creates file `data/prep/<CANCER>_GEXP/<CANCER>_GEXP_prep2_<TYPE>.tsv` that is prepped for distance calculations
-
-> Options for cancer cohort includes `ALL`, `BLCA`, `BRCA`, `COADREAD`, `ESO`, `HNSC`, `KID`, `LGGGBM`, `LIHCCHOL`, `LUNG`, `OV`, `PAAD`, `SARC`, `SKCM`, `UCEC`
-
-For more details on each cancer cohort option see [Cohort Options Page](doc/cohort_options.md)
 
 ## Calculate Latent Transcription Factor Distances
 
@@ -59,9 +49,6 @@ python scripts/matrix_prep.py \
 ```
 
 Get the list of features intersecting with PathwayCommons
-```bash
-curl -o src/PathwayCommons12.All.hgnc.sif.gz https://download.baderlab.org/PathwayCommons/PC2/v12/PathwayCommons12.All.hgnc.sif.gz
-```
 ```bash
 python scripts/matrix_intersect.py \
     -m data/distance_metric/hcmi.counts.tsv \
