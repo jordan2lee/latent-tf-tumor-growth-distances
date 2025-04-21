@@ -26,7 +26,7 @@ Ensure that steps are completed on the [Requirements page](doc/requirements.md) 
 ## Download Data from Manifest File Using the GDC Client
 Download Gene Expression Data
 ```bash
-bash scripts/gdc_download.sh
+bash scripts/gdc_download.sh PAAD
 ```
 
 This will create subfolders in `data-raw/<CANCER>_GEXP_<TYPE>` and place GDC molecular matrices here.
